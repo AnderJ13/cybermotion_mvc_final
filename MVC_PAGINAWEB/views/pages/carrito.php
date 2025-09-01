@@ -17,7 +17,7 @@ $total = $subtotal;
 // Procesar la compra cuando se envía el formulario
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirmar_compra'])) {
     // Conectar a la base de datos del CRUD
-    $crud_db = new mysqli("localhost", "usuario_crud", "password_crud", "cybermotion");
+    $crud_db = new mysqli("localhost", "root", "", "cybermotion");
     
     if ($crud_db->connect_error) {
         die("Error de conexión: " . $crud_db->connect_error);
