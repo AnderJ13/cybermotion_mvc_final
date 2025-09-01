@@ -1,0 +1,74 @@
+/* --- Estilos Generales --- */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+}
+
+/* --- Header --- */
+header {
+    background: white;
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.logo {
+    color: #0d47a1;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+/* --- Formulario de Registro --- */
+.login-page {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.login-box {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 800px;
+}
+
+.register-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.register-table td {
+    padding: 10px;
+    border: 1px solid #eaeaea;
+}
+
+.register-table input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.register-btn {
+    background: #0d47a1;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.register-btn:hover {
+    background: #08306b;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 20px;
+    background: white;
+    margin-top: 40px;
+}
