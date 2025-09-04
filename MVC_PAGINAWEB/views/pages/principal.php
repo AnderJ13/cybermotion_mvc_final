@@ -37,7 +37,6 @@ require_once __DIR__ . '/../partials/header.php';
                         </p>
                     </div>
                 <?php endif; ?>
-                <button class="learn-more">Saber Más</button>
             </div>
             <div class="image-content">
                 <img src="/MVC_PAGINAWEB/public/assets/img/unnamed.png" alt="Guante Traductor">

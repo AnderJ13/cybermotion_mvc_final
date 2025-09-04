@@ -33,9 +33,9 @@ main {
 }
 
 .logo-center img {
-    width: 340px;      /* Puedes ajustar el ancho para "estirar" más */
+    width: 340px;
     max-width: 90vw;
-    height: 90px;      /* Ajusta la altura según tu logo */
+    height: 90px;
     object-fit: contain;
     display: block;
 }
@@ -46,7 +46,7 @@ main {
     text-align: center;
     padding: 36px 10px 24px 10px;
     margin-bottom: 24px;
-    border-radius: 0; /* <-- Esquinas cuadradas */
+    border-radius: 0;
     box-shadow: 0 2px 12px rgba(44,62,80,0.08);
 }
 
@@ -73,7 +73,7 @@ main {
     box-sizing: border-box;
 }
 
-/* HEADER */
+/* HEADER ACTUALIZADO */
 .main-header {
     width: 100%;
     padding: 22px 40px;
@@ -82,33 +82,89 @@ main {
     border-bottom: 2px solid #eaeaea;
     box-shadow: 0 2px 6px rgba(0,0,0,0.08);
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
-/* Espacio para centrar el logo */
+/* Header - Logo mantiene su tamaño original */
 .main-header .logo {
-    font-size: 2.7rem;
+    font-size: 2.7rem; /* MANTIENE tamaño original */
     font-weight: bold;
     color: #0d47a1;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.18em; /* MANTIENE spacing original */
     text-transform: uppercase;
     font-family: 'Segoe UI', Arial, sans-serif;
-    transform: scaleX(1.18);
+    transform: scaleX(1.18); /* MANTIENE transform original */
     background: linear-gradient(90deg, #2b5876 0%, #4e4376 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-align: center;
-    margin: 0 auto;
-    flex: none;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%) scaleX(1.18);
 }
 
-/* Botón a la derecha, con estilo moderno */
-.main-header .login-btn {
-    position: absolute;
-    right: 40px;
-    top: 50%;
-    transform: translateY(-50%);
+/* SOLO el nombre de usuario se hace más pequeño */
+.user-name {
+    color: #2b5876;
+    font-weight: 600;
+    font-size: 0.95rem; /* REDUCIDO de 1.1rem */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px; /* Limitar ancho máximo */
+}
+
+/* Botones mantienen tamaño original */
+.logout-btn {
+    background: linear-gradient(90deg, #2b5876 0%, #4e4376 100%);
+    color: #fff;
+    padding: 12px 32px; /* MANTIENE tamaño original */
+    border-radius: 8px;
+    font-size: 1.15rem; /* MANTIENE tamaño original */
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+    letter-spacing: 1px; /* MANTIENE spacing original */
+}
+
+.login-btn {
+    background: linear-gradient(90deg, #2b5876 0%, #4e4376 100%);
+    color: #fff;
+    padding: 12px 32px; /* MANTIENE tamaño original */
+    border-radius: 8px;
+    font-size: 1.15rem; /* MANTIENE tamaño original */
+    text-decoration: none;
+    font-weight: 600;
+    border: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(44,62,80,0.10);
+    letter-spacing: 1px; /* MANTIENE spacing original */
+}
+
+/* Responsive - Solo ajuste para el nombre de usuario */
+@media (max-width: 700px) {
+    .user-name {
+        font-size: 0.9rem; /* Más pequeño en móviles */
+        max-width: 100px; /* Más estrecho */
+    }
+    
+    /* Logo mantiene su tamaño responsive original */
+    .main-header .logo {
+        font-size: 2rem; /* Este es el tamaño responsive original */
+        transform: scaleX(1.08);
+    }
+}
+
+.logout-btn:hover {
+    background: linear-gradient(90deg, #4e4376 0%, #2b5876 100%);
+    transform: scale(1.04);
+    box-shadow: 0 4px 16px rgba(44,62,80,0.16);
+}
+
+.login-btn {
     background: linear-gradient(90deg, #2b5876 0%, #4e4376 100%);
     color: #fff;
     padding: 12px 32px;
@@ -121,12 +177,11 @@ main {
     box-shadow: 0 2px 8px rgba(44,62,80,0.10);
     letter-spacing: 1px;
     cursor: pointer;
-    overflow: hidden;
 }
 
-.main-header .login-btn:hover {
+.login-btn:hover {
     background: linear-gradient(90deg, #4e4376 0%, #2b5876 100%);
-    transform: translateY(-50%) scale(1.04);
+    transform: scale(1.04);
     box-shadow: 0 4px 16px rgba(44,62,80,0.16);
 }
 
@@ -135,27 +190,28 @@ main {
         flex-direction: column;
         padding: 14px 8px;
         gap: 10px;
-        justify-content: center;
-        align-items: center;
     }
+    
     .main-header .logo {
-        font-size: 2rem;
-        transform: scaleX(1.08);
-        margin-bottom: 8px;
-        width: 100%;
-        text-align: center;
-        display: block;
-    }
-    .main-header .login-btn {
         position: static;
         transform: none;
+        margin-bottom: 8px;
+        font-size: 2rem;
+        transform: scaleX(1.08);
+    }
+    
+    .user-menu {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .login-btn,
+    .logout-btn {
         width: 100%;
         max-width: 220px;
         font-size: 1rem;
         padding: 10px 0;
-        margin-left: 0;
-        margin-right: 0;
-        margin: 0 auto; /* <-- Esto centra el botón */
+        text-align: center;
     }
 }
 
@@ -164,7 +220,7 @@ main {
     display: flex;
     flex-wrap: wrap;
     gap: 36px;
-    align-items: center; /* Ya lo tienes, asegura el centrado vertical */
+    align-items: center;
     margin-bottom: 32px;
     width: 100%;
     box-sizing: border-box;
@@ -174,8 +230,8 @@ main {
     flex: 1 1 350px;
     display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra verticalmente el contenido */
-    height: 100%; /* Asegura que ocupe toda la altura del contenedor */
+    justify-content: center;
+    height: 100%;
 }
 
 .text-content h1 {
@@ -185,7 +241,7 @@ main {
 }
 
 .text-content h2 {
-    margin-top: 0; /* Elimina margen superior */
+    margin-top: 0;
     margin-bottom: 20px;
     color: #0d47a1;
     font-size: 2.2rem;
@@ -203,7 +259,6 @@ main {
     border: none;
     padding: 12px 28px;
     border-radius: 6px;
-   
     cursor: pointer;
     transition: background 0.2s;
     box-shadow: 0 3px 6px rgba(0,0,0,0.15);
@@ -234,7 +289,7 @@ main {
     margin-top: 2px;
 }
 
-/* -------- FEATURES & REQUIREMENTS -------- */
+/* FEATURES & REQUIREMENTS */
 .features-section, .benefits-section, .requirements-section, .location-section {
     margin-bottom: 32px;
 }
@@ -292,14 +347,12 @@ main {
     transform: translateX(5px);
 }
 
-/* Sub-secciones */
 .requirements h3 {
     margin: 20px 0 10px;
     color: #0d47a1;
     font-size: 20px;
 }
 
-/* -------- LOCATION -------- */
 .location-section {
     text-align: center;
     margin: 40px auto;
@@ -332,7 +385,6 @@ main {
     border: none;
 }
 
-/* -------- FOOTER -------- */
 footer {
     text-align: center;
     padding: 20px;
@@ -343,7 +395,6 @@ footer {
     color: #555;
 }
 
-/* -------- WHATSAPP FLOAT -------- */
 .whatsapp-float {
     position: fixed;
     width: 60px;
@@ -369,7 +420,6 @@ footer {
     height: 35px;
 }
 
-/* -------- BUY SECTION -------- */
 .buy-section {
     background: #f0f4ff;
     border: 2px solid #2b5876;
@@ -428,34 +478,6 @@ footer {
         width: 100%;
         max-width: 350px;
         margin: 0 auto;
-    }
-}
-
-@media (max-width: 700px) {
-    .main-header {
-        flex-direction: column;
-        padding: 14px 8px;
-        gap: 10px;
-        justify-content: center;
-        align-items: center;
-    }
-    .main-header .logo {
-        font-size: 2rem;
-        transform: scaleX(1.08);
-        margin-bottom: 8px;
-        width: 100%;
-        text-align: center;
-        display: block;
-    }
-    .main-header .login-btn {
-        position: static;
-        transform: none;
-        width: 100%;
-        max-width: 220px;
-        font-size: 1rem;
-        padding: 10px 0;
-        margin-left: 0;
-        margin-right: 0;
     }
 }
 

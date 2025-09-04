@@ -28,6 +28,22 @@ class User {
         }
         return false;
     }
+
+    // NUEVOS MÉTODOS - SIN LLAVE EXTRA
+    public function emailExists($email) {
+        $stmt = $this->db->conn->prepare("SELECT id FROM usuarios WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->num_rows > 0;
+    }
+
+    public function getUserByEmail($email) {
+        $stmt = $this->db->conn->prepare("SELECT id, nombre, email, password_hash FROM usuarios WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
+    }
 }
-// Nota: No debe haber ninguna llave '}' adicional aquí
-?>
+// NO PONGAS NADA MÁS DESPUÉS DE ESTA LLAVE ←

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - CIBER MOTION</title>
     <!-- Unifica tus CSS en un solo archivo -->
-    <link rel="stylesheet" href="/MVC_PAGINAWEB/public/assets/css/style.css">
+    <link rel="stylesheet" href="/MVC_PAGINAWEB/public/assets/css/registro.css">
 </head>
 
 <body>
@@ -27,11 +27,14 @@
             <br>
             
             <!-- Cambia action al controlador MVC -->
-            <form action="/MVC_PAGINAWEB/public/?action=login" method="POST">
-                <input type="email" name="email" placeholder="Correo Electrónico" required>
-                <input type="password" name="password" placeholder="Contraseña" required>
-                <button type="submit">Entrar</button>
+           <form action="/MVC_PAGINAWEB/public/?action=login<?php echo isset($_GET['redirect']) ? '&redirect=' . $_GET['redirect'] : ''; ?>" method="POST">
+    <input type="email" name="email" placeholder="Correo Electrónico" required>
+    <input type="password" name="password" placeholder="Contraseña" required>
+    <button type="submit">Entrar</button>
+
+                <p><a href="/MVC_PAGINAWEB/views/auth/forgot.php">¿Olvidaste tu contraseña?</a></p>
             </form>
+            
         </div>
     </main>
 

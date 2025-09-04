@@ -297,11 +297,75 @@
                 justify-content: center;
             }
         }
+        /* Botón de volver atrás */
+.back-button-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 20px;
+    background: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 10px rgba(0, 102, 204, 0.3);
+}
+
+.back-button:hover {
+    background: #0052a3;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 102, 204, 0.4);
+}
+
+.back-button i {
+    margin-right: 8px;
+}
+
+/* Ajuste para el header principal */
+header {
+    position: relative;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #e6f0ff;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+    .back-button-container {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .back-button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+    
+    header {
+        padding-top: 20px;
+    }
+}
     </style>
 </head>
 <body>
     <div class="container">
         <header>
+            <!-- Botón de volver atrás -->
+<div class="back-button-container">
+    <a href="/MVC_PAGINAWEB/public/?action=principal" class="back-button">
+        <i class="fas fa-arrow-left"></i> Volver al Inicio
+    </a>
+</div>
             <h1>CIBERMOTION</h1>
             <div class="subtitle">Guante Traductor de Lenguaje de Señas</div>
             <div class="price">$165.00</div>
@@ -344,20 +408,24 @@
         </div>
         
         <div class="action-buttons">
-            <div class="quantity-selector">
-                <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
-                <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="99">
-                <button class="quantity-btn" onclick="increaseQuantity()">+</button>
-            </div>
-            
-            <form action="carrito.php" method="POST">
-                <input type="hidden" name="product_quantity" id="product_quantity" value="1">
-                <button type="submit" class="btn btn-primary"> <a href="/MVC_PAGINAWEB/views/pages/carrito.php">
-                    <i class="fas fa-shopping-cart"></i> COMPRAR AHORA
-    </a>
-                </button>
-            </form>
-        </div>
+    <div class="quantity-selector">
+        <button class="quantity-btn" onclick="decreaseQuantity()">-</button>
+        <input type="number" id="quantity" class="quantity-input" value="1" min="1" max="99" onchange="actualizarCantidadHidden()">
+        <button class="quantity-btn" onclick="increaseQuantity()">+</button>
+    </div>
+    
+    <form action="/MVC_PAGINAWEB/views/pages/carrito.php" method="POST">
+        <input type="hidden" name="product_quantity" id="product_quantity" value="1">
+        <input type="hidden" name="product_id" value="1">
+        <input type="hidden" name="product_name" value="Guante Traductor de Lenguaje de Señas">
+        <input type="hidden" name="product_price" value="165.00">
+        <input type="hidden" name="product_image" value="https://sv.epaenlinea.com/media/catalog/product/cache/e28d833c75ef32af78ed2f15967ef6e0/c/7/c71afa2a-ae9e-4b8a-802c-59024e95ce4f.jpg">
+        
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-shopping-cart"></i> COMPRAR AHORA
+        </button>
+    </form>
+</div>
         
         <footer>
             <p>CIBERMOTION &copy; 2025 - Todos los derechos reservados</p>

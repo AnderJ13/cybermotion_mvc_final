@@ -1,4 +1,12 @@
 <?php
+// Iniciar sesión al principio de todo
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once '../controllers/AuthController.php';
+require_once '../controllers/PageController.php';
+
 require_once '../controllers/AuthController.php';
 require_once '../controllers/PageController.php';
 

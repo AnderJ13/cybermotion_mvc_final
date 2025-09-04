@@ -23,15 +23,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirmar_compra'])) 
         die("Error de conexión: " . $crud_db->connect_error);
     }
     
-    // Insertar la orden en la base de datos del CRUD
-    $query = "INSERT INTO ordenes (producto, cantidad, precio_unitario, total, estado) 
-              VALUES (?, ?, ?, ?, 'pendiente')";
+    // OBTENER DATOS DEL USUARIO LOGUEADO
+    $usuario_id = isset($_SESSION['usuario_id']) ? $_SESSION['usuario_id'] : NULL;
+    $nombre_cliente = isset($_SESSION['usuario_nombre']) ? $_SESSION['usuario_nombre'] : 'Cliente no registrado';
+    
+    // INSERTAR CON LOS DATOS DEL USUARIO
+    $query = "INSERT INTO ordenes (producto, cantidad, precio_unitario, total, estado, nombre_cliente) 
+          VALUES (?, ?, ?, ?, 'pendiente', ?)";
+    
     $stmt = $crud_db->prepare($query);
-    $stmt->bind_param("sidd", 
+    $stmt->bind_param("sidds",
         $producto['nombre'], 
         $producto['cantidad'], 
         $producto['precio'], 
-        $total
+        $total,
+        $nombre_cliente
     );
     
     if ($stmt->execute()) {
@@ -44,6 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirmar_compra'])) 
     $stmt->close();
     $crud_db->close();
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -273,6 +280,108 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirmar_compra'])) 
             margin-bottom: 20px;
         }
         
+        /* ========== ESTILOS PARA MODAL DE REGISTRO ========== */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            z-index: 10001;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 3px solid #0066cc;
+            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .modal-content h3 {
+            color: #0066cc;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .modal-content p {
+            margin: 15px 0;
+            color: #555;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .modal-btn {
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 120px;
+        }
+
+        .modal-btn.cancel {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 2px solid #dee2e6;
+        }
+
+        .modal-btn.cancel:hover {
+            background: #e9ecef;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.2);
+        }
+
+        .modal-btn.register {
+            background: #28a745;
+            color: white;
+            border: 2px solid #28a745;
+        }
+
+        .modal-btn.register:hover {
+            background: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .modal-btn.login {
+            background: #0066cc;
+            color: white;
+            border: 2px solid #0066cc;
+        }
+
+        .modal-btn.login:hover {
+            background: #0052a3;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 102, 204, 0.3);
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
             .cart-container {
                 flex-direction: column;
@@ -292,15 +401,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirmar_compra'])) 
             h1 {
                 font-size: 2.2rem;
             }
-      </style>
 
-      </head>
+            /* Modal responsive */
+            @media (max-width: 576px) {
+                .modal-content {
+                    padding: 25px 20px;
+                    width: 95%;
+                }
+                
+                .modal-content h3 {
+                    font-size: 1.5rem;
+                }
+                
+                .modal-buttons {
+                    flex-direction: column;
+                    gap: 12px;
+                }
+                
+                .modal-btn {
+                    width: 100%;
+                    text-align: center;
+                }
+            }
+        }
+    </style>
+</head>
 
-      <body>
+<body>
     <div class="container">
         <header>
             <h1><i class="fas fa-shopping-cart"></i> Carrito de Compras</h1>
-            <a href="javascript:history.back()" class="back-link"><i class="fas fa-arrow-left"></i> Volver a la tienda</a>
+            <a href="/MVC_PAGINAWEB/views/pages/compra.php" class="back-link"><i class="fas fa-arrow-left"></i> Volver a la tienda</a>
         </header>
         
         <?php if (isset($mensaje_exito)): ?>
@@ -359,5 +490,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['confirmar_compra'])) 
             </div>
         </div>
     </div>
+
+    <!-- ========== MODAL MEJORADO ========== -->
+    <div id="modalRegistro" class="modal-backdrop" style="display: none;">
+        <div class="modal-content">
+            <h3>🔐 Acceso Requerido</h3>
+            <p>Para completar tu compra, necesitas tener una cuenta en nuestro sistema.</p>
+            <p>¿Qué deseas hacer?</p>
+            
+            <div class="modal-buttons">
+                <button onclick="cerrarModal()" class="modal-btn cancel">
+                    Cancelar
+                </button>
+                <a href="/MVC_PAGINAWEB/public/?action=register&redirect=compra" class="modal-btn register">
+                    Registrarme
+                </a>
+                <a href="/MVC_PAGINAWEB/public/?action=login&redirect=compra" class="modal-btn login">
+                    Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function checkLoginBeforePurchase() {
+        <?php if (!isset($_SESSION['usuario_id'])): ?>
+            // Mostrar modal de registro si no está logueado
+            document.getElementById('modalRegistro').style.display = 'block';
+            return false;
+        <?php else: ?>
+            return true;
+        <?php endif; ?>
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalRegistro').style.display = 'none';
+    }
+
+    // Cerrar modal al hacer clic fuera
+    document.getElementById('modalRegistro').addEventListener('click', function(e) {
+        if (e.target === this) {
+            cerrarModal();
+        }
+    });
+
+    // Cerrar con ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            cerrarModal();
+        }
+    });
+
+    // Aplicar a formularios
+    document.querySelectorAll('form[method="POST"]').forEach(form => {
+        form.onsubmit = function() {
+            return checkLoginBeforePurchase();
+        };
+    });
+    </script>
 </body>
 </html>

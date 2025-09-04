@@ -10,6 +10,12 @@ class AuthController {
 
     public function register() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Validar si el email ya existe
+            if ($this->model->emailExists($_POST['email'])) {
+                header("Location: /MVC_PAGINAWEB/public/?action=register&error=email_exists");
+                exit();
+            }
+            
             $success = $this->model->register(
                 $_POST['nombre'],
                 $_POST['email'],
@@ -18,7 +24,12 @@ class AuthController {
             );
             
             if ($success) {
-                header("Location: /MVC_PAGINAWEB/public/?action=login&registered=1");
+                // REDIRIGIR AL LOGIN CON REDIRECCIÓN A CARRITO SI ES NECESARIO
+                if (isset($_GET['redirect']) && $_GET['redirect'] === 'compra') {
+                    header("Location: /MVC_PAGINAWEB/public/?action=login&redirect=compra&registered=1");
+                } else {
+                    header("Location: /MVC_PAGINAWEB/public/?action=login&registered=1");
+                }
                 exit();
             } else {
                 header("Location: /MVC_PAGINAWEB/public/?action=register&error=1");
@@ -39,7 +50,12 @@ class AuthController {
                 $_SESSION['usuario_nombre'] = $user['nombre'];
                 $_SESSION['usuario_email'] = $user['email'];
                 
-                header("Location: /MVC_PAGINAWEB/public/?action=principal");
+                // REDIRIGIR AL CARRITO SI VIENE DE COMPRA, SINO A PRINCIPAL
+                if (isset($_GET['redirect']) && $_GET['redirect'] === 'compra') {
+                    header("Location: /MVC_PAGINAWEB/views/pages/carrito.php");
+                } else {
+                    header("Location: /MVC_PAGINAWEB/public/?action=principal");
+                }
                 exit();
             } else {
                 header("Location: /MVC_PAGINAWEB/public/?action=login&error=1");
@@ -49,31 +65,31 @@ class AuthController {
         require '../views/auth/login.php';
     }
 
-   public function logout() {
-    // No necesitas session_start() aquí
-    
-    // Limpia todas las variables de sesión
-    $_SESSION = [];
-    
-    // Borra la cookie de sesión
-    if (ini_get("session.use_cookies")) {
-        $params = session_get_cookie_params();
-        setcookie(
-            session_name(), 
-            '', 
-            time() - 42000,
-            $params["path"], 
-            $params["domain"],
-            $params["secure"], 
-            $params["httponly"]
-        );
+    public function logout() {
+        // No necesitas session_start() aquí
+        
+        // Limpia todas las variables de sesión
+        $_SESSION = [];
+        
+        // Borra la cookie de sesión
+        if (ini_get("session.use_cookies")) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(), 
+                '', 
+                time() - 42000,
+                $params["path"], 
+                $params["domain"],
+                $params["secure"], 
+                $params["httponly"]
+            );
+        }
+        
+        // Destruye la sesión
+        session_destroy();
+        
+        // Redirección
+        header("Location: /MVC_PAGINAWEB/public/?action=principal");
+        exit();
     }
-    
-    // Destruye la sesión
-    session_destroy();
-    
-    // Redirección
-    header("Location: /MVC_PAGINAWEB/public/?action=principal");
-    exit();
-}
 }
